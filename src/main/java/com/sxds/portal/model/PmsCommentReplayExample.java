@@ -1,4 +1,4 @@
-package com.macro.mall.model;
+package com.sxds.portal.model;
 
 import java.util.ArrayList;
 import java.util.Date;
