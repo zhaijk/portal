@@ -1,38 +1,92 @@
 package com.sxds.portal;
 
-import junit.framework.Test;
-import junit.framework.TestCase;
-import junit.framework.TestSuite;
+import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * Unit test for simple App.
  */
-public class AppTest 
-    extends TestCase
-{
-    /**
-     * Create the test case
-     *
-     * @param testName name of the test case
-     */
-    public AppTest( String testName )
-    {
-        super( testName );
+@RunWith(SpringJUnit4ClassRunner.class) 
+@SpringBootTest(classes = MallPortalApplication.class)
+public class AppTest {
+    class User implements Serializable{
+    	/**
+		 * 
+		 */
+		private static final long serialVersionUID = 1L;
+		private String name;
+    	public String getName() {
+			return name;
+		}
+		public void setName(String name) {
+			this.name = name;
+		}
+		public int getAge() {
+			return age;
+		}
+		public void setAge(int age) {
+			this.age = age;
+		}
+		public int getSex() {
+			return sex;
+		}
+		public void setSex(int sex) {
+			this.sex = sex;
+		}
+		private int age;
+    	private int sex;
+    	private boolean flag;
+		public boolean isFlag() {
+			return flag;
+		}
+		public void setFlag(boolean flag) {
+			this.flag = flag;
+		}
+		@Override
+		public String toString() {
+			return "User [name=" + name + ", age=" + age + ", sex=" + sex + ", flag=" + flag + "]";
+		}
+		public Map<String ,Object> toHashMap(){
+			Map<String ,Object> obj=new HashMap<String ,Object>();
+			obj.put("name", name);
+			obj.put("age", age);
+			obj.put("sex", sex);
+			obj.put("flag", flag);
+			return obj;
+		}
     }
-
-    /**
-     * @return the suite of tests being tested
-     */
-    public static Test suite()
-    {
-        return new TestSuite( AppTest.class );
-    }
-
-    /**
-     * Rigourous Test :-)
-     */
-    public void testApp()
-    {
-        assertTrue( true );
+	@Autowired
+    private RedisTemplate<String,Object> redisTemplate;
+	@Autowired
+    private StringRedisTemplate strRedisTemplate;
+    @Test
+    public void op() {
+    	User user=new User();
+    	user.setAge(11);
+    	user.setName("zhaijk");
+    	//System.out.println(user);
+    	for(int i=0;i<10;i++) {
+    		user.setAge(100+i*20);
+    		user.setName("zhaijk"+i*i);
+    		redisTemplate.opsForHash().putAll("zhaijk:"+i, user.toHashMap());
+    	}
+    	for(int i=0;i<10 ;i++) {
+    		Object u=redisTemplate.opsForHash().get("zhaijk:"+i, "name");
+    		System.out.println("user:"+u);
+    	}
+//    	redisTemplate.opsForHash().put("zhaijk", "age",11);
+//    	int re=(int) redisTemplate.opsForHash().get("zhaijk", "age");
+//    	System.out.println(re);
+    	//redisTemplate.setHashValueSerializer(hashValueSerializer);
+    	
     }
 }

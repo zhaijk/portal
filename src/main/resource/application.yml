@@ -1,66 +1,21 @@
 server:
-  port: 8089
-  ssl:
-    key-store: keystore.p12
-    key-store-type: PKCS12
-    key-store-password: derun20190318
+  port: 80
 spring: 
   profiles: 
     active: local
   thymeleaf:
     cache: false
-  data-source:    
-    driver-class-name: oracle.jdbc.OracleDriver    
-    url: jdbc:oracle:thin:@localhost:1521:oraclejczb
-    username: wujing
-    password: wujing
-    maximumPoolSize: 30
-    minimumIdle: 5
-    connectionTimeout: 300
-    idleTimeout: 60000
-    maxLifetime: 1800000
-    maximumPoolSize: 15
-    connectionTestQuery: select 1  from dual
-    autoCommit: false
-    cachePrepStmts: true
-    prepStmtCacheSize: 250
-    prepStmtCacheSqlLimit: 2048
-    useServerPrepStmts: true
-    useLocalSessionState: true
-    useLocalTransactionState: true
-    rewriteBatchedStatements: true
-    cacheResultSetMetadata: true
-    cacheServerConfiguration: true
-    elideSetAutoCommits: true
-    maintainTimeStats: false
-    destroy-method: shutdown
-pagehelper:
-    helperDialect: oracle
-    reasonable: true
-    supportMethodsArguments: true
-    params: count=countSql
+  redis:
+    database: 0
+    host: 127.0.0.1
+    port: 6379
+    password:
+    pool:
+      max-active: 8
+      max-wait: 1
+      max-idle: 8
+      min-idle: 0
+      timeout: 0 
 logging: 
   level: 
     com.derun: DEBUG
-#redis配置
-  redis:
-#  数据库索引
-    database: 0
-#    服务器地址
-    host: 127.0.0.1
-#    服务器连接端口
-    port: 6379
-#    链接密码
-    password:
-#    链接池
-    pool:
-#    最大连接数（负值表示没有限制）
-      max-active: 8
-#      最大阻塞等待时间（负值表示没有限制）
-      max-wait: 1
-#      最大空闲链接
-      max-idle: 8
-#      最小空闲链接
-      min-idle: 0
-#    链接超时时间（毫秒）
-    timeout: 0
