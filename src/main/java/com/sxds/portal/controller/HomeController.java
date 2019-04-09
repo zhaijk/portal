@@ -6,8 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class HomeController{
 
-	@GetMapping({"/",""})
+	@GetMapping("")
 	public String init() {
 		return "index";
+	}	
+	@GetMapping("register")
+	public String login() {
+		return "register";
 	}
 }
